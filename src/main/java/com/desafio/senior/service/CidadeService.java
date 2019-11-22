@@ -18,7 +18,7 @@ public class CidadeService {
   @Autowired
   SetupCSV setup;
 
-  private String CIDADES_FILE = "C:\\Desafio Cidades - Back End.csv";
+  private String CIDADES_FILE = ".\\csv\\Desafio Cidades - Back End.csv";
 
   public void setupCidades() {
     List<Cidade> cidadeList = setup.loadObjectList(Cidade.class, CIDADES_FILE);

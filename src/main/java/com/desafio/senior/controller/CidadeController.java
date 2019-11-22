@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Vinicius Silveira
@@ -53,17 +52,17 @@ public class CidadeController {
   }
 
   @PutMapping(value = "/cidades/{ibgeid}")
-  public ResponseEntity<Cidade> put(@PathVariable(value = "ibgeid") int ibgeid, @RequestBody Cidade cidadeNew) {
-    Optional<Cidade> cidadeOld = cidadeRepository.findByIbgeId(ibgeid);
+  public ResponseEntity<Cidade> put(@PathVariable(value = "ibgeid") int ibgeId, @RequestBody Cidade cidadeNew) {
+    Optional<Cidade> cidadeOld = cidadeRepository.findByIbgeId(ibgeId);
 
     if (cidadeOld.isPresent()) {
       Cidade cidade = cidadeOld.get();
-      int idOld = cidade.getIdCidade();
+      int idOld = cidade.getIdcidade();
 
       // Atualizando objeto
       cidade = cidadeNew;
       // Mantendo o mesmo id do objeto original
-      cidade.setIdCidade(idOld);
+      cidade.setIdcidade(idOld);
       cidadeRepository.save(cidade);
 
       return new ResponseEntity<Cidade>(cidade, HttpStatus.OK);
@@ -73,8 +72,8 @@ public class CidadeController {
   }
 
   @DeleteMapping(value = "/cidades/{ibgeid}")
-  public ResponseEntity<Object> Delete(@PathVariable(value = "iibgeid") int ibgeid) {
-    Optional<Cidade> cidade = cidadeRepository.findByIbgeId(ibgeid);
+  public ResponseEntity<Object> Delete(@PathVariable(value = "ibgeid") int ibgeId) {
+    Optional<Cidade> cidade = cidadeRepository.findByIbgeId(ibgeId);
 
     if (cidade.isPresent()) {
       cidadeRepository.delete(cidade.get());
@@ -82,6 +81,17 @@ public class CidadeController {
       return new ResponseEntity<>(HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @GetMapping(value = "/cidades/importacao")
+  public ResponseEntity<Object> importarDados() {
+    try {
+      cidadeService.setupCidades();
+
+      return new ResponseEntity<>(HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
   }
 }

@@ -1,7 +1,5 @@
 package com.desafio.senior.model;
 
-import java.math.BigInteger;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +20,7 @@ public class Cidade {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "idcidade")
-  private int idCidade;
+  private int idcidade;
   @Column(name = "ibge_id")
   private int ibgeId;
   @Column(name = "uf")
@@ -33,9 +31,9 @@ public class Cidade {
   @Column(name = "capital")
   private boolean capital = false;
   @Column(name = "lon")
-  private BigInteger lon;
+  private Double lon;
   @Column(name = "lat")
-  private BigInteger lat;
+  private Double lat;
   @Column(name = "no_accents")
   private String noAccents;
   @Column(name = "alternative_names")
@@ -48,12 +46,12 @@ public class Cidade {
   public Cidade() {
   }
 
-  public int getIdCidade() {
-    return idCidade;
+  public int getIdcidade() {
+    return idcidade;
   }
 
-  public void setIdCidade(int idCidade) {
-    this.idCidade = idCidade;
+  public void setIdcidade(int idcidade) {
+    this.idcidade = idcidade;
   }
 
   public int getIbgeId() {
@@ -88,19 +86,19 @@ public class Cidade {
     this.capital = capital;
   }
 
-  public BigInteger getLon() {
+  public Double getLon() {
     return lon;
   }
 
-  public void setLon(BigInteger lon) {
+  public void setLon(Double lon) {
     this.lon = lon;
   }
 
-  public BigInteger getLat() {
+  public Double getLat() {
     return lat;
   }
 
-  public void setLat(BigInteger lat) {
+  public void setLat(Double lat) {
     this.lat = lat;
   }
 
