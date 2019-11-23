@@ -1,2 +1,0 @@
-O nome das colunas do arquivo .csv possuia underline, o que estava causando problemas ao realizar a importação dos dados.
-Portanto, utilizei CamelCase e removi os underlines para fazer funcionar corretamente

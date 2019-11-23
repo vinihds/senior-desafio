@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author Vinicius Silveira
  * 
@@ -54,10 +56,12 @@ public class Cidade {
     this.idcidade = idcidade;
   }
 
+  @JsonProperty("ibge_id")
   public int getIbgeId() {
     return ibgeId;
   }
 
+  @JsonProperty("ibge_id")
   public void setIbgeId(int ibgeId) {
     this.ibgeId = ibgeId;
   }
@@ -102,18 +106,22 @@ public class Cidade {
     this.lat = lat;
   }
 
+  @JsonProperty("no_accents")
   public String getNoAccents() {
     return noAccents;
   }
 
+  @JsonProperty("no_accents")
   public void setNoAccents(String noAccents) {
     this.noAccents = noAccents;
   }
 
+  @JsonProperty("alternative_names")
   public String getAlternativeNames() {
     return alternativeNames;
   }
 
+  @JsonProperty("alternative_names")
   public void setAlternativeNames(String alternativeNames) {
     this.alternativeNames = alternativeNames;
   }
