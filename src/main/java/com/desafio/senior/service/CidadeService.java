@@ -3,6 +3,11 @@ package com.desafio.senior.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
 import com.desafio.senior.model.Cidade;
 import com.desafio.senior.repository.CidadeRepository;
 import com.desafio.senior.util.SetupCSV;
@@ -17,6 +22,9 @@ public class CidadeService {
   CidadeRepository cidadeRepository;
   @Autowired
   SetupCSV setup;
+
+  @PersistenceContext
+  protected EntityManager em;
 
   private String CIDADES_FILE = ".\\csv\\Desafio Cidades - Back End.csv";
 
@@ -36,4 +44,11 @@ public class CidadeService {
     }
   }
 
+  public long countRegistrosPorColuna(String attributeName) {
+    CriteriaBuilder qb = em.getCriteriaBuilder();
+    CriteriaQuery<Long> cq = qb.createQuery(Long.class);
+    cq.select(qb.countDistinct(cq.from(Cidade.class).get(attributeName)));
+
+    return em.createQuery(cq).getSingleResult();
+  }
 }

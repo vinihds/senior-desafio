@@ -166,9 +166,13 @@ public class CidadeController {
   }
 
   @GetMapping(value = "/pesquisa/count/cidades")
-  public int countCidadesPorColuna(@RequestParam(value = "coluna") String coluna) {
-    int countCidadesPorColuna = cidadeRepository.countRegistrosPorColuna(coluna);
+  public ResponseEntity<Long> countCidadesPorColuna(@RequestParam(value = "coluna") String coluna) {
+    try {
+      long countCidadesPorColuna = cidadeService.countRegistrosPorColuna(coluna);
 
-    return countCidadesPorColuna;
+      return new ResponseEntity<Long>(countCidadesPorColuna, HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
   }
 }
