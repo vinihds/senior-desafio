@@ -150,7 +150,7 @@ public class CidadeController {
     }
   }
 
-  @GetMapping(value = "/cidades/name")
+  @GetMapping(value = "/cidades/name", params = { "uf" })
   public ResponseEntity<?> cidadesNamePorUf(@RequestParam(value = "uf") String uf) {
     List<Cidade> cidadesPorUf = cidadeRepository.findAllByUf(uf.toUpperCase());
 
@@ -165,12 +165,23 @@ public class CidadeController {
     }
   }
 
-  @GetMapping(value = "/pesquisa/count/cidades")
+  @GetMapping(value = "/pesquisa/count/cidades", params = { "coluna" })
   public ResponseEntity<Long> countCidadesPorColuna(@RequestParam(value = "coluna") String coluna) {
     try {
       long countCidadesPorColuna = cidadeService.countRegistrosPorColuna(coluna);
 
       return new ResponseEntity<Long>(countCidadesPorColuna, HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @GetMapping(value = "/pesquisa/count/cidades")
+  public ResponseEntity<Integer> countCidades() {
+    try {
+      int count = cidadeRepository.countCidades();
+
+      return new ResponseEntity<Integer>(count, HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

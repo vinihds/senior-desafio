@@ -30,4 +30,7 @@ public interface CidadeRepository extends JpaRepository<Cidade, Integer>, JpaSpe
 
   @Query(value = "SELECT COUNT(DISTINCT(:coluna)) FROM cidade", nativeQuery = true)
   int countRegistrosPorColuna(@Param(value = "coluna") String coluna);
+
+  @Query("SELECT COUNT(c) FROM Cidade AS c")
+  public int countCidades();
 }
