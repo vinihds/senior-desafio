@@ -33,66 +33,11 @@ public class CidadeController {
   @Autowired
   CidadeRepository cidadeRepository;
 
-  @GetMapping(value = "/cidades")
-  public List<Cidade> getCidades() {
-    return cidadeRepository.findAll();
-  }
-
-  @GetMapping(value = "/cidades/{ibgeid}")
-  public ResponseEntity<Cidade> getCidadesByIbgeId(@PathVariable(name = "ibgeid") int ibgeId) {
-    Optional<Cidade> cidade = cidadeRepository.findByIbgeId(ibgeId);
-
-    if (cidade.isPresent()) {
-      return new ResponseEntity<Cidade>(cidade.get(), HttpStatus.OK);
-    } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-  }
-
-  @PostMapping(value = "/cidades")
-  public Cidade post(@RequestBody Cidade cidade) {
-    return cidadeRepository.save(cidade);
-  }
-
-  // @PutMapping(value = "/cidades/{ibgeid}")
-  // public ResponseEntity<Cidade> put(@PathVariable(value = "ibgeid") int ibgeId,
-  // @RequestBody Cidade cidadeNew) {
-  // Optional<Cidade> cidadeOld = cidadeRepository.findByIbgeId(ibgeId);
-
-  // if (cidadeOld.isPresent()) {
-  // Cidade cidade = cidadeOld.get();
-  // int idOld = cidade.getIdcidade();
-
-  // // Atualizando objeto
-  // cidade = cidadeNew;
-  // // Mantendo o mesmo id do objeto original
-  // cidade.setIdcidade(idOld);
-  // cidadeRepository.save(cidade);
-
-  // return new ResponseEntity<Cidade>(cidade, HttpStatus.OK);
-  // } else {
-  // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-  // }
-  // }
-
-  @DeleteMapping(value = "/cidades/{ibgeid}")
-  public ResponseEntity<Object> Delete(@PathVariable(value = "ibgeid") int ibgeId) {
-    Optional<Cidade> cidade = cidadeRepository.findByIbgeId(ibgeId);
-
-    if (cidade.isPresent()) {
-      cidadeRepository.delete(cidade.get());
-
-      return new ResponseEntity<>(HttpStatus.OK);
-    } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-  }
-
-  @GetMapping(value = "/pesquisa/cidades/capital")
-  public List<Cidade> getCapitais() {
-    return cidadeRepository.findByCapitalTrueOrderByName();
-  }
-
+  /**
+   * Desafio 1
+   * 
+   * @return
+   */
   @PostMapping(value = "/cidades/importacao")
   public ResponseEntity<Object> importarDados() {
     try {
@@ -104,6 +49,21 @@ public class CidadeController {
     }
   }
 
+  /**
+   * Desafio 2
+   * 
+   * @return
+   */
+  @GetMapping(value = "/pesquisa/cidades/capital")
+  public List<Cidade> getCapitais() {
+    return cidadeRepository.findByCapitalTrueOrderByName();
+  }
+
+  /**
+   * Desafio 3
+   * 
+   * @return
+   */
   @GetMapping(value = "/pesquisa/count/cidades/uf/maiormenor")
   public ResponseEntity<String> retornaCountMaiorMenorCidadesPorUf() {
     List<Object[]> countCidadesPorUf = cidadeRepository.retornaCountCidadesPorUf();
@@ -128,6 +88,11 @@ public class CidadeController {
     }
   }
 
+  /**
+   * Desafio 4
+   * 
+   * @return
+   */
   @GetMapping(value = "/pesquisa/count/cidades/uf")
   public ResponseEntity<String> countCidadesPorUf() {
     List<Object[]> countCidadesPorUf = cidadeRepository.retornaCountCidadesPorUf();
@@ -150,6 +115,29 @@ public class CidadeController {
     }
   }
 
+  /**
+   * Desafio 5
+   * 
+   * @param ibgeId
+   * @return
+   */
+  @GetMapping(value = "/cidades/{ibgeid}")
+  public ResponseEntity<Cidade> getCidadesByIbgeId(@PathVariable(name = "ibgeid") int ibgeId) {
+    Optional<Cidade> cidade = cidadeRepository.findByIbgeId(ibgeId);
+
+    if (cidade.isPresent()) {
+      return new ResponseEntity<Cidade>(cidade.get(), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  /**
+   * Desafio 6
+   * 
+   * @param uf
+   * @return
+   */
   @GetMapping(value = "/cidades/name", params = { "uf" })
   public ResponseEntity<?> cidadesNamePorUf(@RequestParam(value = "uf") String uf) {
     List<Cidade> cidadesPorUf = cidadeRepository.findAllByUf(uf.toUpperCase());
@@ -165,6 +153,59 @@ public class CidadeController {
     }
   }
 
+  /**
+   * Desafio 7
+   * 
+   * @param cidade
+   * @return
+   */
+  @PostMapping(value = "/cidades")
+  public Cidade post(@RequestBody Cidade cidade) {
+    return cidadeRepository.save(cidade);
+  }
+
+  /**
+   * Desafio 8
+   * 
+   * @param ibgeId
+   * @return
+   */
+  @DeleteMapping(value = "/cidades/{ibgeid}")
+  public ResponseEntity<Object> Delete(@PathVariable(value = "ibgeid") int ibgeId) {
+    Optional<Cidade> cidade = cidadeRepository.findByIbgeId(ibgeId);
+
+    if (cidade.isPresent()) {
+      cidadeRepository.delete(cidade.get());
+
+      return new ResponseEntity<>(HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  /**
+   * Desafio 9
+   * 
+   * @return
+   */
+  @GetMapping(value = "/pesquisa/filtrar/cidades/{coluna}/{valor}")
+  public ResponseEntity<?> filtarCSV(@PathVariable(value = "coluna") String coluna,
+      @PathVariable(value = "valor") String valor) {
+    try {
+      List<Cidade> cidadeList = cidadeService.filtrarCSV(coluna, valor);
+
+      return new ResponseEntity<>(cidadeList, HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Desafio 10
+   * 
+   * @param coluna
+   * @return
+   */
   @GetMapping(value = "/pesquisa/count/cidades", params = { "coluna" })
   public ResponseEntity<Long> countCidadesPorColuna(@RequestParam(value = "coluna") String coluna) {
     try {
@@ -176,12 +217,33 @@ public class CidadeController {
     }
   }
 
+  /**
+   * Desafio 11
+   * 
+   * @return
+   */
   @GetMapping(value = "/pesquisa/count/cidades")
   public ResponseEntity<Integer> countCidades() {
     try {
       int count = cidadeRepository.countCidades();
 
       return new ResponseEntity<Integer>(count, HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Desafio 12
+   * 
+   * @return
+   */
+  @GetMapping(value = "/pesquisa/distancia/cidades")
+  public ResponseEntity<?> distanciaEntreCidades() {
+    try {
+      List<?> cidadesDistantes = cidadeService.distanciaEntreCidades();
+
+      return new ResponseEntity<>(cidadesDistantes, HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
